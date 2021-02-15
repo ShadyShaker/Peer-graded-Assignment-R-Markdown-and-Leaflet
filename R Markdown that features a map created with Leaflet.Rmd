@@ -1,0 +1,45 @@
+---
+title: "R Markdown that features a map created with Leaflet"
+author: "Shady Shaker"
+date: "February 15, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+library(leaflet)
+library(htmltools)
+
+states <- read.csv("G:/datasetrestaurant.csv") 
+
+mimapa <- data.frame(Ranking = states$Ranking,
+                     Name = states$Name,
+                     City = states$City,
+                     Country = states$Country,
+                     Latitude = states$Latitude,
+                     Longitude = states$Longitude
+                     )
+
+
+map <- mimapa %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(popup=paste
+             ("<br>Country: ", 
+               htmlEscape(mimapa$Country), 
+              "<br>City: ", 
+               htmlEscape(mimapa$City), 
+              "<br>Restaurant: ", 
+               htmlEscape(mimapa$Name),
+              "<br>Ranking: ",
+               formatC(states$Ranking, format = "d", big.mark = ",")
+              ) 
+            )
+map
+```
+
+
